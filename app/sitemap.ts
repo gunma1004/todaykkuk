@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-// 🗺️ 사이트맵 전용 지역 및 동 데이터
+// 🗺️ 사이트맵 전용 지역 및 동 데이터 (메인 화면과 동일)
 const regionData: Record<string, { name: string; districts: Record<string, { name: string; dongs: string[] }> }> = {
   seoul: {
     name: "서울특별시",
@@ -102,7 +102,6 @@ const regionData: Record<string, { name: string; districts: Record<string, { nam
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://todaykkuk.netlify.app';
 
-  // 1. 메인 홈 페이지
   const mainRoute: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -112,7 +111,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // 2. 상단 카테고리 메인 페이지
   const categoryRoutes: MetadataRoute.Sitemap = [
     'services',
     'prices',
@@ -126,7 +124,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // 3. 메인 5개 제휴업체 상세 페이지 (/shop/1 ~ /shop/5)
   const shopRoutes: MetadataRoute.Sitemap = [1, 2, 3, 4, 5].map((id) => ({
     url: `${baseUrl}/shop/${id}`,
     lastModified: new Date(),
@@ -134,32 +131,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  // 4. regionData를 활용하여 모든 지역(시·도, 구·군, 동·읍·면) 및 샵 상세 경로 동적 생성
   const dynamicRegionRoutes: MetadataRoute.Sitemap = [];
   const healingRegionRoutes: MetadataRoute.Sitemap = [];
 
   Object.entries(regionData).forEach(([regionKey, regionVal]) => {
     Object.entries(regionVal.districts).forEach(([districtKey, districtVal]) => {
-      const districtPath = `${regionKey}/${districtKey}`;
-      
-      dynamicRegionRoutes.push({
-        url: `${baseUrl}/${districtPath}`,
-        lastModified: new Date(),
-        changeFrequency: 'daily',
-        priority: 0.9,
+      // 🌟 핵심: 영문 키 경로와 한글 이름(예: 여주시) 경로를 둘 다 생성하여 매칭 보장
+      const pathsToPush = [
+        `${regionKey}/${districtKey}`,
+        `${regionKey}/${encodeURIComponent(districtVal.name)}`
+      ];
+
+      pathsToPush.forEach((districtPath) => {
+        dynamicRegionRoutes.push({
+          url: `${baseUrl}/${districtPath}`,
+          lastModified: new Date(),
+          changeFrequency: 'daily',
+          priority: 0.9,
+        });
+
+        healingRegionRoutes.push({
+          url: `${baseUrl}/healing/${districtPath}`,
+          lastModified: new Date(),
+          changeFrequency: 'daily',
+          priority: 0.9,
+        });
       });
 
-      healingRegionRoutes.push({
-        url: `${baseUrl}/healing/${districtPath}`,
-        lastModified: new Date(),
-        changeFrequency: 'daily',
-        priority: 0.9,
-      });
+      // 동 및 샵 상세 경로 생성 (한글 이름 기준 경로로 통합 연결)
+      const primaryDistrictPath = `${regionKey}/${encodeURIComponent(districtVal.name)}`;
 
-      // 5. 세부 동·읍·면 및 각 동별 샵 상세 페이지 경로 자동 순회 추가
       districtVal.dongs.forEach((dong) => {
         const encodedDong = encodeURIComponent(dong);
-        const dongBasePath = `${districtPath}/${encodedDong}`;
+        const dongBasePath = `${primaryDistrictPath}/${encodedDong}`;
 
         dynamicRegionRoutes.push({
           url: `${baseUrl}/${dongBasePath}`,
