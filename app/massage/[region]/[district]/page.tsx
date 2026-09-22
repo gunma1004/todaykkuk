@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const titleIndex = variantIndex % titleTemplates.length;
   const descIndex = variantIndex % descTemplates.length;
 
-  const finalTitle = `${titleTemplates[titleIndex]} (${variantIndex + 1})`;
+  const finalTitle = `${titleTemplates[titleIndex]} })`;
   const finalDescription = descTemplates[descIndex];
 
   return {
