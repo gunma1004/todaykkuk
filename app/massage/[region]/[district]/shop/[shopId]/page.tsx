@@ -212,16 +212,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // 메타 디스크립션: '출장마사지' 키워드가 자연스럽게 분산 배치되도록 구성 (1000가지 대응)
   const descriptionVariants = [
-    `${locationPrefix} 지역에서 편리하게 이용하는 출장 및 타이 마사지 전문 ${shop.name}. 선입금 없는 100% 후불제로 안심하고 이용하세요.`,
+    `${locationPrefix} 지역에서 편리하게 이용하는 출장 마사지 전문 ${shop.name}. 선입금 없는 100% 후불제로 안심하고 이용하세요.`,
     `${locationPrefix} 전지역 맞춤형 출장 마사지 제휴 안내. 최고급 아로마 오일로 전신 피로를 부드럽게 풀어드립니다.`,
-    `${locationPrefix} 집이나 숙소로 부르는 편리한 출장 솔루션. 숙련된 테라피스트의 마사지로 일상의 활력을 되찾아보세요.`,
+    `${locationPrefix} 집이나 숙소로 부르는 편리한 출장 마사지 솔루션. 숙련된 테라피스트들로 일상의 활력을 되찾아보세요.`,
     `${locationPrefix} 프라이빗한 공간에서 누리는 출장 및 스웨디시 마사지 예약 가이드. 온전한 쉼과 휴식을 선사하는 ${shop.name}.`,
-    `${locationPrefix} 방문 힐링 전신 마사지 프로그램과 전문 출장마사지 서비스. 정직한 정찰제 요금과 신속한 배차 시스템을 제공합니다.`,
-    `${locationPrefix} 피로회복을 위한 마사지 안내. 굳은 근육을 시원하게 이완시키는 출장 전문 바디케어와 타이 테라피.`,
-    `${locationPrefix} 내 공간에서 편안하게 즐기는 출장 홈케어 서비스. ${shop.name} 마사지 로 지금 확인해보세요.`,
+    `${locationPrefix} 방문 힐링 전신 홈케어 프로그램과 전문 출장마사지 서비스. 정직한 정찰제 요금과 신속한 배차 시스템을 제공합니다.`,
+    `${locationPrefix} 피로회복을 위한 출장 마사지 안내. 굳은 근육을 시원하게 이완시키는 전문 마사지 바디케어와 타이 테라피.`,
+    `${locationPrefix} 내 공간에서 편안하게 즐기는 출장 마사지 서비스. ${shop.name} 로 지금 확인해보세요.`,
     `${locationPrefix} 1:1 커스텀 출장 마사지 및 릴렉스 마사지 제휴처. 청결하고 쾌적한 힐링 서비스를 약속드립니다.`,
-    `${locationPrefix} 건식 스트레칭 및 아로마 복합 마사지 코스 안내. 투명한 출장 요금과 친절한 상담 상시 대기 중.`,
-    `${locationPrefix} 프리미엄 감성 마사지 24시간 안내. ${shop.name}의 정성스러운 출장 바디 밸런스 케어 프로그램.`
+    `${locationPrefix} 건식 스트레칭 및 아로마 복합 출장 마사지 코스 안내. 투명한 요금과 친절한 상담 상시 대기 중.`,
+    `${locationPrefix} 프리미엄 감성 홈케어 24시간 안내. ${shop.name}의 정성스러운 출장 마사지 밸런스 케어 프로그램.`
   ];
 
   const titleIndex = variantIndex % titleVariants.length;

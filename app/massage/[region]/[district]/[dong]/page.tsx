@@ -63,11 +63,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // 메타 디스크립션: '출장'과 '마사지' 키워드가 들어가되 절대 붙어있지 않고 띄어져서 자연스럽게 분산 배치된 배열
   const descTemplates = [
-    `${locationTitle} 지역에서 편리하게 부를 수 있는 출장 서비스부터 쾌적한 전문 매장의 마사지 제휴업체 정보까지 한눈에 비교해보세요.`,
+    `${locationTitle} 지역에서 편리하게 부를 수 있는 출장 마사지 서비스부터 쾌적한 전문 매장의 제휴업체 정보까지 한눈에 비교해보세요.`,
     `${simpleLocation} 인근에서 차별화된 출장 서비스와 힐링 마사지 프로그램을 찾고 계신다면 투데이쿡의 엄선된 요금표를 확인해보세요.`,
-    `${locationTitle} 맞춤형 홈케어 출장 안내입니다. 집에서 편안하게 받는 서비스부터 전문 매장의 릴렉스 마사지까지 만나보세요.`,
-    `${simpleLocation} 프라이빗한 휴식을 선사하는 전문 출장 서비스 및 타이·아로마 마사지 프로그램으로 일상의 피로를 날려보세요.`,
-    `${locationTitle} 정성 어린 손길의 출장 바디케어 정보. 투명한 정찰제와 쾌적한 웰니스 마사지 코스를 지금 바로 확인해보세요.`
+    `${locationTitle} 맞춤형 홈케어 출장 마사지 안내입니다. 집에서 편안하게 받는 서비스부터 전문 매장의 릴렉스 까지 만나보세요.`,
+    `${simpleLocation} 프라이빗한 휴식을 선사하는 전문 출장 마사지 서비스 및 타이·아로마 프로그램으로 일상의 피로를 날려보세요.`,
+    `${locationTitle} 정성 어린 손길의 출장 마사지 정보. 투명한 정찰제와 쾌적한 웰니스 코스를 지금 바로 확인해보세요.`
   ];
 
   const titleIndex = variantIndex % titleTemplates.length;

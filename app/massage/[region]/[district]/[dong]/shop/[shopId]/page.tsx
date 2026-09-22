@@ -212,11 +212,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   ];
 
   const descriptionVariants = [
-    `${locationTitle} 지역에서 쾌적하고 편안하게 즐길 수 있는 전문 마사지 제휴업체 정보와 상세한 프로그램 안내를 확인해보세요.`,
-    `${locationTitle} 인근에서 차별화된 힐링 마사지 코스를 찾고 계신다면 투데이쿡이 엄선한 신뢰도 높은 제휴 요금표를 만나보세요.`,
-    `${locationTitle} 맞춤형 바디케어 안내입니다. 일상의 피로를 말끔히 풀어주는 전문 매장의 릴렉스 마사지 프로그램을 비교해보세요.`,
-    `${locationTitle} 전 지역에서 신속하게 이용 가능한 정찰제 마사지 및 프라이빗 제휴샵 정보를 빠르고 정확하게 안내해 드립니다.`,
-    `${locationTitle} 최고의 휴식을 선사하는 전문 테라피스트들의 맞춤형 마사지 코스. 지금 바로 투데이쿡에서 제휴 혜택을 확인하세요.`
+    `${locationTitle} 지역에서 쾌적하고 편안하게 즐길 수 있는 전문 출장마사지 제휴업체 정보와 상세한 프로그램 안내를 확인해보세요.`,
+    `${locationTitle} 인근에서 차별화된 출장 힐링 마사지 코스를 찾고 계신다면 투데이쿡이 엄선한 신뢰도 높은 제휴 요금표를 만나보세요.`,
+    `${locationTitle} 맞춤형 바디케어 안내입니다. 일상의 피로를 말끔히 풀어주는 전문 매장의 출장 릴렉스 마사지 프로그램을 비교해보세요.`,
+    `${locationTitle} 전 지역에서 신속하게 이용 가능한 정찰제 출장 마사지 및 프라이빗 제휴샵 정보를 빠르고 정확하게 안내해 드립니다.`,
+    `${locationTitle} 최고의 휴식을 선사하는 전문 테라피스트들의 맞춤형 출장 마사지 코스. 지금 바로 투데이쿡에서 제휴 혜택을 확인하세요.`
   ];
 
   const titleIndex = variantIndex % titleVariants.length;
