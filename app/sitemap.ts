@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-// 🗺️ 사이트맵 전용 지역 및 동 데이터 (메인 화면과 동일)
+// 🗺️ 사이트맵 전용 지역 및 동 데이터
 const regionData: Record<string, { name: string; districts: Record<string, { name: string; dongs: string[] }> }> = {
   seoul: {
     name: "서울특별시",
@@ -131,49 +131,50 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  const dynamicRegionRoutes: MetadataRoute.Sitemap = [];
-  const healingRegionRoutes: MetadataRoute.Sitemap = [];
+  const dynamicMassageRoutes: MetadataRoute.Sitemap = [];
 
+  // 🌟 핵심: 모든 지역/구/동/샵 경로 앞에 /massage 추가
   Object.entries(regionData).forEach(([regionKey, regionVal]) => {
+    // 시(Region) 메인 페이지 추가 (/massage/seoul 등)
+    dynamicMassageRoutes.push({
+      url: `${baseUrl}/massage/${regionKey}`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    });
+
     Object.entries(regionVal.districts).forEach(([districtKey, districtVal]) => {
-      // 🌟 핵심: 영문 키 경로와 한글 이름(예: 여주시) 경로를 둘 다 생성하여 매칭 보장
-      const pathsToPush = [
-        `${regionKey}/${districtKey}`,
-        `${regionKey}/${encodeURIComponent(districtVal.name)}`
+      const districtPaths = [
+        `massage/${regionKey}/${districtKey}`,
+        `massage/${regionKey}/${encodeURIComponent(districtVal.name)}`
       ];
 
-      pathsToPush.forEach((districtPath) => {
-        dynamicRegionRoutes.push({
+      districtPaths.forEach((districtPath) => {
+        dynamicMassageRoutes.push({
           url: `${baseUrl}/${districtPath}`,
-          lastModified: new Date(),
-          changeFrequency: 'daily',
-          priority: 0.9,
-        });
-
-        healingRegionRoutes.push({
-          url: `${baseUrl}/healing/${districtPath}`,
           lastModified: new Date(),
           changeFrequency: 'daily',
           priority: 0.9,
         });
       });
 
-      // 동 및 샵 상세 경로 생성 (한글 이름 기준 경로로 통합 연결)
-      const primaryDistrictPath = `${regionKey}/${encodeURIComponent(districtVal.name)}`;
+      const primaryDistrictPath = `massage/${regionKey}/${encodeURIComponent(districtVal.name)}`;
 
       districtVal.dongs.forEach((dong) => {
         const encodedDong = encodeURIComponent(dong);
         const dongBasePath = `${primaryDistrictPath}/${encodedDong}`;
 
-        dynamicRegionRoutes.push({
+        // 동 페이지 추가 (/massage/seoul/서초구/반포동)
+        dynamicMassageRoutes.push({
           url: `${baseUrl}/${dongBasePath}`,
           lastModified: new Date(),
           changeFrequency: 'weekly',
           priority: 0.7,
         });
 
+        // 동 하위 샵 상세 페이지 추가 (/massage/seoul/서초구/반포동/shop/1)
         [1, 2, 3, 4, 5].forEach((shopId) => {
-          dynamicRegionRoutes.push({
+          dynamicMassageRoutes.push({
             url: `${baseUrl}/${dongBasePath}/shop/${shopId}`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -188,7 +189,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...mainRoute,
     ...categoryRoutes,
     ...shopRoutes,
-    ...dynamicRegionRoutes,
-    ...healingRegionRoutes,
+    ...dynamicMassageRoutes,
   ];
 }

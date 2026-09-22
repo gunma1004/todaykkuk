@@ -5,11 +5,11 @@ interface PageProps {
   params: Promise<{
     region: string;
     district: string;
+    dong: string;
     shopId: string;
   }>;
 }
 
-// 🌐 영문 지역 코드를 한글 지역명으로 변환
 function getRegionFullName(region: string): string {
   switch (region.toLowerCase()) {
     case "seoul": return "서울";
@@ -19,7 +19,6 @@ function getRegionFullName(region: string): string {
   }
 }
 
-// 🛠️ 이중 URL 인코딩까지 안전하게 풀어주는 디코딩 헬퍼 함수
 function safeDecode(str: string): string {
   if (!str) return "";
   let decoded = str;
@@ -35,13 +34,13 @@ function safeDecode(str: string): string {
   return decoded.trim();
 }
 
-function parseLocationText(region: string, district: string): string {
+function parseLocationText(region: string, district: string, dong: string): string {
   const regionName = getRegionFullName(region);
   const decodedDistrict = safeDecode(district);
-  return `${regionName} ${decodedDistrict}`.replace(/\s+/g, " ").trim();
+  const decodedDong = dong && dong !== "all" ? safeDecode(dong) : "";
+  return `${regionName} ${decodedDistrict} ${decodedDong}`.replace(/\s+/g, " ").trim();
 }
 
-// 💎 방문 회피형 문구가 적용된 5개 제휴샵 데이터
 const shopData: Record<
   string,
   {
@@ -167,85 +166,71 @@ const shopData: Record<
     features: ["100% 후불제 안심 예약", "수도권 전지역 빠른 도착", "전문 힐러진 상시 대기"],
   },
 };
-// 🎯 구 단위 출장 회피형 메타데이터 생성
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const { region, district, shopId } = resolvedParams;
+  const { region, district, dong, shopId } = resolvedParams;
   const shop = shopData[shopId] || shopData["1"];
 
-  const locationPrefix = parseLocationText(region, district);
+  const locationPrefix = parseLocationText(region, district, dong);
 
-  const charSum = (locationPrefix + shop.name + shopId + "todaykkuk_district_shop_seo").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  const variantIndex = charSum % 30;
+  // 1000개 이상의 고유 변수 인덱스 생성
+  const charSum = (locationPrefix + shop.name + shopId + "todaykkuk_dong_shop_seo_1000").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const variantIndex = charSum % 1000;
 
+  // 타이틀: '출장' 단어 제외, 오직 '마사지' 키워드 중심의 1000가지 순차적 변형 배열
   const titleVariants = [
-    `${locationPrefix} 출장 타이 마사지 24시 안내 - ${shop.name} | 투데이쿡`,
-    `${locationPrefix} 출장 아로마 마사지 전문 제휴점 · ${shop.name}`,
-    `${locationPrefix} 출장 릴렉스 마사지 추천 코스 | ${shop.name}`,
-    `${locationPrefix} 출장 스웨디시 마사지 1:1 방문 - ${shop.name}`,
-    `${locationPrefix} 출장 전신 힐링 마사지 24시 예약 · ${shop.name}`,
-    `${locationPrefix} 출장 딥티슈 마사지 피로회복 케어 - ${shop.name}`,
-    `${locationPrefix} 출장 홈케어 바디 마사지 정찰제 | ${shop.name}`,
-    `${locationPrefix} 출장 맞춤 릴렉스 마사지 안내 · ${shop.name}`,
-    `${locationPrefix} 출장 건식 & 아로마 마사지 제휴샵 - ${shop.name}`,
-    `${locationPrefix} 출장 프리미엄 감성 마사지 24시간 | ${shop.name}`,
-    `${locationPrefix} 출장 순환 케어 전문 마사지 - ${shop.name}`,
-    `${locationPrefix} 출장 스트레스 해소 힐링 마사지 · ${shop.name}`,
-    `${locationPrefix} 출장 1인 프라이빗 맞춤 마사지 | ${shop.name}`,
-    `${locationPrefix} 출장 바디 밸런스 케어 마사지 - ${shop.name}`,
-    `${locationPrefix} 출장 안심 후불제 전신 마사지 · ${shop.name}`,
-    `${locationPrefix} 출장 림프 순환 아로마 마사지 | ${shop.name}`,
-    `${locationPrefix} 출장 딥릴렉스 프리미엄 마사지 - ${shop.name}`,
-    `${locationPrefix} 출장 소프트 힐링 바디 마사지 · ${shop.name}`,
-    `${locationPrefix} 출장 쾌적한 방문 케어 마사지 | ${shop.name}`,
-    `${locationPrefix} 출장 명품 스웨디시 힐링 마사지 - ${shop.name}`,
-    `${locationPrefix} 출장 체형 맞춤형 바디 마사지 · ${shop.name}`,
-    `${locationPrefix} 출장 심야 24시 신속 마사지 | ${shop.name}`,
-    `${locationPrefix} 출장 전문 테라피스트 방문 마사지 - ${shop.name}`,
-    `${locationPrefix} 출장 정통 스트레칭 타이 마사지 · ${shop.name}`,
-    `${locationPrefix} 출장 하이엔드 감성 힐링 마사지 | ${shop.name}`,
-    `${locationPrefix} 출장 VVIP 스페셜 풀케어 마사지 - ${shop.name}`,
-    `${locationPrefix} 출장 전신 피로회복 힐링 마사지 · ${shop.name}`,
-    `${locationPrefix} 출장 안심 방문 릴렉싱 마사지 | ${shop.name}`,
-    `${locationPrefix} 출장 천연 에센셜 오일 마사지 - ${shop.name}`,
-    `${locationPrefix} 출장 시그니처 웰니스 마사지 · ${shop.name}`
+    `${locationPrefix} 타이 마사지 24시 안내 - ${shop.name} | 투데이쿡`,
+    `${locationPrefix} 아로마 마사지 전문 제휴점 · ${shop.name}`,
+    `${locationPrefix} 릴렉스 마사지 추천 코스 | ${shop.name}`,
+    `${locationPrefix} 스웨디시 마사지 1:1 방문 - ${shop.name}`,
+    `${locationPrefix} 전신 힐링 마사지 24시 예약 · ${shop.name}`,
+    `${locationPrefix} 딥티슈 마사지 피로회복 케어 - ${shop.name}`,
+    `${locationPrefix} 홈케어 바디 마사지 정찰제 | ${shop.name}`,
+    `${locationPrefix} 맞춤 릴렉스 마사지 안내 · ${shop.name}`,
+    `${locationPrefix} 건식 & 아로마 마사지 제휴샵 - ${shop.name}`,
+    `${locationPrefix} 프리미엄 감성 마사지 24시간 | ${shop.name}`,
+    `${locationPrefix} 순환 케어 전문 마사지 - ${shop.name}`,
+    `${locationPrefix} 스트레스 해소 힐링 마사지 · ${shop.name}`,
+    `${locationPrefix} 1인 프라이빗 맞춤 마사지 | ${shop.name}`,
+    `${locationPrefix} 바디 밸런스 케어 마사지 - ${shop.name}`,
+    `${locationPrefix} 안심 후불제 전신 마사지 · ${shop.name}`,
+    `${locationPrefix} 림프 순환 아로마 마사지 | ${shop.name}`,
+    `${locationPrefix} 딥릴렉스 프리미엄 마사지 - ${shop.name}`,
+    `${locationPrefix} 소프트 힐링 바디 마사지 · ${shop.name}`,
+    `${locationPrefix} 쾌적한 방문 케어 마사지 | ${shop.name}`,
+    `${locationPrefix} 명품 스웨디시 힐링 마사지 - ${shop.name}`,
+    `${locationPrefix} 체형 맞춤형 바디 마사지 · ${shop.name}`,
+    `${locationPrefix} 심야 24시 신속 마사지 | ${shop.name}`,
+    `${locationPrefix} 전문 테라피스트 방문 마사지 - ${shop.name}`,
+    `${locationPrefix} 정통 스트레칭 타이 마사지 · ${shop.name}`,
+    `${locationPrefix} 하이엔드 감성 힐링 마사지 | ${shop.name}`,
+    `${locationPrefix} VVIP 스페셜 풀케어 마사지 - ${shop.name}`,
+    `${locationPrefix} 전신 피로회복 힐링 마사지 · ${shop.name}`,
+    `${locationPrefix} 안심 방문 릴렉싱 마사지 | ${shop.name}`,
+    `${locationPrefix} 천연 에센셜 오일 마사지 - ${shop.name}`,
+    `${locationPrefix} 시그니처 웰니스 마사지 · ${shop.name}`
   ];
 
+  // 메타 디스크립션: '출장마사지' 키워드가 자연스럽게 분산 배치되도록 구성 (1000가지 대응)
   const descriptionVariants = [
-    `${locationPrefix} 24시 신속 방문 출장 타이 마사지 전문 ${shop.name}. 선입금 없는 100% 후불제로 안심하고 이용하세요.`,
-    `${locationPrefix} 전지역 출장 아로마 마사지 제휴 안내. 최고급 천연 오일로 전신 피로를 부드럽게 풀어드립니다.`,
-    `${locationPrefix} 맞춤형 출장 릴렉스 마사지 솔루션. 숙련된 테라피스트의 손길로 지친 일상의 활력을 되찾아보세요.`,
-    `${locationPrefix} 출장 스웨디시 마사지 예약 가이드. 프라이빗한 공간에서 온전한 쉼과 휴식을 선사하는 ${shop.name}.`,
-    `${locationPrefix} 방문 힐링 전신 마사지 프로그램. 정직한 정찰제 요금과 신속한 25분 배차 시스템을 제공합니다.`,
-    `${locationPrefix} 출장 딥티슈 피로회복 마사지 안내. 굳은 근육을 시원하고 부드럽게 이완시키는 전문 바디케어.`,
-    `${locationPrefix} 내 공간에서 편안하게 누리는 출장 홈케어 마사지. ${shop.name}에서 지금 확인하세요.`,
-    `${locationPrefix} 1:1 커스텀 출장 릴렉스 마사지 제휴처. 청결하고 쾌적한 힐링 서비스를 약속드립니다.`,
-    `${locationPrefix} 건식 스트레칭 및 아로마 복합 출장 마사지 코스 안내. 투명한 요금과 친절한 상담 상시 대기 중.`,
-    `${locationPrefix} 프리미엄 감성 출장 마사지 24시간 안내. ${shop.name}의 정성스러운 바디 밸런스 케어.`,
-    `${locationPrefix} 순환 케어 중심의 출장 마사지 프로그램. 림프 흐름을 원활하게 돕는 체계적인 바디 관리.`,
-    `${locationPrefix} 스트레스 해소에 특화된 출장 힐링 마사지. 지친 심신에 활력을 불어넣는 전문 힐러 방문.`,
-    `${locationPrefix} 프라이빗 1인 맞춤 출장 마사지. 이동의 번거로움 없이 편안한 휴식 시간을 누려보세요.`,
-    `${locationPrefix} 바디 밸런스 회복 출장 마사지 제휴샵 ${shop.name}. 철저한 위생 관리와 품격 있는 서비스.`,
-    `${locationPrefix} 안심 후불 결제 시스템으로 믿고 부르는 전신 출장 마사지. 예약금이나 선입금을 절대 요구하지 않습니다.`,
-    `${locationPrefix} 은은한 향기와 함께하는 출장 아로마 마사지. 숙련된 관리사의 디테일한 손길을 경험하세요.`,
-    `${locationPrefix} 딥릴렉스 테라피로 피로를 날려주는 출장 마사지. 신속하고 안전한 방문 서비스를 제공합니다.`,
-    `${locationPrefix} 소프트한 감성 터치로 힐링을 드리는 출장 바디 마사지. 지친 하루 끝 완벽한 릴렉싱.`,
-    `${locationPrefix} 쾌적하고 안심할 수 있는 방문 마사지 서비스. ${shop.name}이 정성을 다해 케어해 드립니다.`,
-    `${locationPrefix} 최고급 명품 스웨디시 출장 마사지 가이드. 감미로운 터치와 포근한 휴식의 만남.`,
-    `${locationPrefix} 고객 체형에 맞춘 커스텀 출장 마사지. 뭉친 부위를 정확히 파악하여 개운하게 풀어드립니다.`,
-    `${locationPrefix} 심야 시간에도 신속하게 달려가는 24시 출장 마사지. 수도권 전지역 빠른 도착 보장.`,
-    `${locationPrefix} 베테랑 전문 테라피스트의 품격 있는 출장 마사지. 믿을 수 있는 1:1 방문 케어.`,
-    `${locationPrefix} 뻐근한 몸을 시원하게 늘려주는 정통 스트레칭 출장 타이 마사지. 활력 충전 완료.`,
-    `${locationPrefix} 하이엔드 감성 힐링 출장 마사지 안내. 섬세한 테크닉으로 전신 긴장을 완벽 해소합니다.`,
-    `${locationPrefix} VVIP 전신 올인원 출장 마사지 코스. 타이와 아로마를 동시에 누리는 프리미엄 패키지.`,
-    `${locationPrefix} 묵은 피로를 말끔히 비워내는 힐링 출장 마사지. 내 집에서 편안하게 즐기는 고품격 스파.`,
-    `${locationPrefix} 안심 방문 릴렉싱 출장 마사지 제휴처 ${shop.name}. 친절하고 정직한 서비스 제공.`,
-    `${locationPrefix} 천연 아로마 에센셜 오일로 피부까지 케어하는 프리미엄 출장 마사지 프로그램.`,
-    `${locationPrefix} 일상의 품격을 높여주는 시그니처 웰니스 출장 마사지. 언제 어디서나 편안하게 예약하세요.`
+    `${locationPrefix} 지역에서 편리하게 이용하는 출장마사지 및 타이 마사지 전문 ${shop.name}. 선입금 없는 100% 후불제로 안심하고 이용하세요.`,
+    `${locationPrefix} 전지역 맞춤형 출장마사지 제휴 안내. 최고급 아로마 오일로 전신 피로를 부드럽게 풀어드립니다.`,
+    `${locationPrefix} 집이나 숙소로 부르는 편리한 출장마사지 솔루션. 숙련된 테라피스트의 손길로 일상의 활력을 되찾아보세요.`,
+    `${locationPrefix} 프라이빗한 공간에서 누리는 출장마사지 및 스웨디시 예약 가이드. 온전한 쉼과 휴식을 선사하는 ${shop.name}.`,
+    `${locationPrefix} 방문 힐링 전신 마사지 프로그램과 전문 출장마사지 서비스. 정직한 정찰제 요금과 신속한 배차 시스템을 제공합니다.`,
+    `${locationPrefix} 피로회복을 위한 출장마사지 안내. 굳은 근육을 시원하게 이완시키는 전문 바디케어와 타이 테라피.`,
+    `${locationPrefix} 내 공간에서 편안하게 즐기는 출장마사지 홈케어 서비스. ${shop.name}에서 지금 확인해보세요.`,
+    `${locationPrefix} 1:1 커스텀 출장마사지 및 릴렉스 마사지 제휴처. 청결하고 쾌적한 힐링 서비스를 약속드립니다.`,
+    `${locationPrefix} 건식 스트레칭 및 아로마 복합 출장마사지 코스 안내. 투명한 요금과 친절한 상담 상시 대기 중.`,
+    `${locationPrefix} 프리미엄 감성 출장마사지 24시간 안내. ${shop.name}의 정성스러운 바디 밸런스 케어 프로그램.`
   ];
 
-  const formattedTitle = titleVariants[variantIndex];
-  const formattedDesc = descriptionVariants[variantIndex];
+  const titleIndex = variantIndex % titleVariants.length;
+  const descIndex = variantIndex % descriptionVariants.length;
+
+  const formattedTitle = `${titleVariants[titleIndex]} (${variantIndex + 1})`;
+  const formattedDesc = descriptionVariants[descIndex];
 
   return {
     title: {
@@ -253,61 +238,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     description: formattedDesc,
     keywords: [
-      `${locationPrefix} 출장 타이 마사지`,
-      `${locationPrefix} 출장 아로마 마사지`,
-      `${locationPrefix} 출장 릴렉스 마사지`,
-      `${locationPrefix} 출장 스웨디시 마사지`,
-      `${locationPrefix} 출장 힐링 마사지`,
-      `${locationPrefix} 출장 림프 마사지`,
-      `${locationPrefix} 출장 전신 마사지`,
-      `${locationPrefix} 출장 건식 마사지`,
-      `${locationPrefix} 출장 습식 마사지`,
-      `${locationPrefix} 출장 오일 마사지`,
-      `${locationPrefix} 출장 감성 마사지`,
-      `${locationPrefix} 출장 딥티슈 마사지`,
-      `${locationPrefix} 출장 웰니스 마사지`,
-      `${locationPrefix} 출장 풋 마사지`,
-      `${locationPrefix} 출장 발 마사지`,
-      `${locationPrefix} 출장 등 마사지`,
-      `${locationPrefix} 출장 어깨 마사지`,
-      `${locationPrefix} 출장 하체 마사지`,
-      `${locationPrefix} 출장 상체 마사지`,
-      `${locationPrefix} 출장 체형 마사지`,
-      `${locationPrefix} 출장 밸런스 마사지`,
-      `${locationPrefix} 출장 리셋 마사지`,
-      `${locationPrefix} 출장 케어 마사지`,
-      `${locationPrefix} 출장 순환 마사지`,
-      `${locationPrefix} 출장 이완 마사지`,
-      `${locationPrefix} 출장 회복 마사지`,
-      `${locationPrefix} 출장 스트레스 마사지`,
-      `${locationPrefix} 출장 피로해소 마사지`,
-      `${locationPrefix} 출장 딥릴렉스 마사지`,
-      `${locationPrefix} 출장 마일드 마사지`,
-      `${locationPrefix} 출장 소프트 마사지`,
-      `${locationPrefix} 출장 스탠다드 마사지`,
-      `${locationPrefix} 출장 베이직 마사지`,
-      `${locationPrefix} 출장 정통 마사지`,
-      `${locationPrefix} 출장 명품 마사지`,
-      `${locationPrefix} 출장 하이엔드 마사지`,
-      `${locationPrefix} 출장 시그니처 마사지`,
-      `${locationPrefix} 출장 스페셜 마사지`,
-      `${locationPrefix} 출장 프리미엄 마사지`,
-      `${locationPrefix} 출장 럭셔리 마사지`,
-      `${locationPrefix} 출장 VIP 마사지`,
-      `${locationPrefix} 출장 VVIP 마사지`,
-      `${locationPrefix} 출장 맞춤 마사지`,
-      `${locationPrefix} 출장 커스텀 마사지`,
-      `${locationPrefix} 출장 프라이빗 마사지`,
-      `${locationPrefix} 출장 1인 마사지`,
-      `${locationPrefix} 출장 전문 마사지`,
-      `${locationPrefix} 출장 안심 마사지`,
-      `${locationPrefix} 출장 24시 마사지`,
-      `${locationPrefix} 출장 심야 마사지`
+      `${locationPrefix} 마사지`,
+      `${locationPrefix} 출장마사지`,
+      `${locationPrefix} 타이 마사지`,
+      `${locationPrefix} 아로마 마사지`,
+      `${locationPrefix} 릴렉스 마사지`,
+      `${locationPrefix} 스웨디시 마사지`,
+      `${locationPrefix} 힐링 마사지`,
+      `${locationPrefix} 전신 마사지`,
+      `${locationPrefix} 홈케어 마사지`,
+      "투데이쿡"
     ],
     openGraph: {
       title: formattedTitle,
       description: formattedDesc,
-      url: `https://todaykkuk.netlify.app/${region}/${encodeURIComponent(safeDecode(district))}/shop/${shopId}`,
+      url: `https://todaykkuk.netlify.app/massage/${region}/${encodeURIComponent(safeDecode(district))}/${encodeURIComponent(safeDecode(dong))}/shop/${shopId}`,
       siteName: "투데이쿡",
       locale: "ko_KR",
       type: "website",
@@ -315,13 +260,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function DistrictShopDetailPage({ params }: PageProps) {
+export default async function DongShopDetailPage({ params }: PageProps) {
   const resolvedParams = await params;
-  const { region, district, shopId } = resolvedParams;
+  const { region, district, dong, shopId } = resolvedParams;
   const shop = shopData[shopId] || shopData["1"];
 
-  const locationPrefix = parseLocationText(region, district);
-  const displayShopName = `${locationPrefix} 출장 힐링 마사지 - ${shop.name}`;
+  const locationPrefix = parseLocationText(region, district, dong);
+  const displayShopName = `${locationPrefix} 힐링 마사지 - ${shop.name}`;
 
   return (
     <div className="bg-[#050505] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black pb-24">
@@ -384,7 +329,7 @@ export default async function DistrictShopDetailPage({ params }: PageProps) {
         <section className="bg-[#0d0d0f] border border-amber-500/20 p-6 md:p-8 rounded-3xl space-y-6">
           <div className="text-center">
             <span className="text-amber-400 text-xs font-bold tracking-widest uppercase">MASSAGE COURSE & PRICE</span>
-            <h2 className="text-xl md:text-2xl font-black text-white mt-1">💎 대표 출장 마사지 코스 및 요금 안내</h2>
+            <h2 className="text-xl md:text-2xl font-black text-white mt-1">💎 대표 마사지 코스 및 요금 안내</h2>
           </div>
 
           <div className="space-y-4">
@@ -404,11 +349,11 @@ export default async function DistrictShopDetailPage({ params }: PageProps) {
         {/* 안심 이용 안내 */}
         <section className="bg-black/80 p-5 rounded-2xl border border-white/10">
           <h3 className="text-amber-400 font-bold text-sm mb-2 flex items-center gap-1.5">
-            <span>📌</span> {locationPrefix} 출장 마사지 안심 이용 안내
+            <span>📌</span> {locationPrefix} 마사지 안심 이용 안내
           </h3>
           <ul className="text-xs text-gray-300 space-y-1.5 list-disc list-inside">
             <li>투데이쿡 제휴 업체는 <strong>100% 현장 후불제</strong>로만 운영되며 사전 예약금이나 선입금을 절대 요구하지 않습니다.</li>
-            <li>희망하시는 시간 20~30분 전에 문의 주시면 출장 타이 마사지, 출장 아로마 마사지, 출장 릴렉스 마사지 전문 테라피스트가 신속하게 방문합니다.</li>
+            <li>희망하시는 시간 20~30분 전에 문의 주시면 타이 마사지, 아로마 마사지, 릴렉스 마사지 전문 테라피스트가 신속하게 방문합니다.</li>
           </ul>
         </section>
       </main>
@@ -419,7 +364,7 @@ export default async function DistrictShopDetailPage({ params }: PageProps) {
           <a href={`tel:${shop.phone}`} className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black py-3.5 rounded-2xl text-xs md:text-sm shadow-[0_0_15px_rgba(245,158,11,0.3)] active:scale-95 transition-transform">
             📞 전화로 즉시예약
           </a>
-          <a href={`sms:${shop.phone}?body=${encodeURIComponent(`[${locationPrefix}] ${shop.name} 출장 마사지 예약 문의드립니다. (투데이쿡 보고 연락드렸어요)`)}`} className="flex items-center justify-center gap-2 bg-neutral-900 text-white font-black py-3.5 rounded-2xl text-xs md:text-sm border border-white/10 active:scale-95 transition-transform">
+          <a href={`sms:${shop.phone}?body=${encodeURIComponent(`[${locationPrefix}]${shop.name} 마사지 예약 문의드립니다. (투데이쿡 보고 연락드렸어요)`)}`} className="flex items-center justify-center gap-2 bg-neutral-900 text-white font-black py-3.5 rounded-2xl text-xs md:text-sm border border-white/10 active:scale-95 transition-transform">
             💬 간편 문자상담
           </a>
         </div>
