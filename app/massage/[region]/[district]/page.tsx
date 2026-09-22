@@ -8,7 +8,7 @@ interface PageProps {
   }>;
 }
 
-const shops = [
+const originalShops = [
   { id: "shop1", name: "🔥 한국미인테라피", desc: "선입금 없는 100% 후불제 맞춤 방문 힐링 케어", price: "100,000원부터~", phone: "0507-1280-3303" },
   { id: "shop2", name: "✨ 오늘밤테라피", desc: "품격 있는 힐링을 선사하는 최고급 오일 프라이빗 방문 테라피", price: "60,000원부터~", phone: "0507-1280-3223" },
   { id: "shop3", name: "💎 주주테라피", desc: "재방문율 1위! 칼도착 25분 보장, 철저한 위생 관리", price: "60,000원부터~", phone: "0507-1280-3193" },
@@ -40,7 +40,7 @@ function safeDecode(str: string): string {
   return decoded.trim();
 }
 
-// 100가지 이상의 타이틀 조합을 만들어내는 함수
+// 100가지 이상의 타이틀 조합
 function generate100Titles(locationTitle: string, index: number): string {
   const prefixes = [
     `${locationTitle} 마사지 제휴 안내`,
@@ -83,7 +83,7 @@ function generate100Titles(locationTitle: string, index: number): string {
   return `${p} | ${m} - ${s}`;
 }
 
-// 100가지 이상의 설명(Description) 조합을 만들어내는 함수
+// 100가지 이상의 설명 조합
 function generate100Descriptions(locationTitle: string, index: number): string {
   const hooks = [
     `${locationTitle} 지역에서 편리하게 부를 수 있는 출장 서비스부터 쾌적한 전문 매장의 마사지 제휴업체 정보까지 한눈에 비교해보세요.`,
@@ -114,7 +114,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const districtName = safeDecode(district);
   const locationTitle = `${regionName} ${districtName}`.trim();
 
-  // 지역 문자열의 문자 코드 합산을 활용하여 0 ~ 99 범위의 고유하고 무작위적인 인덱스(100가지 조합) 추출
   const charSum = (locationTitle + districtName).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const variantIndex = charSum % 100;
 
@@ -149,6 +148,9 @@ export default async function DistrictPage({ params }: PageProps) {
   const regionName = getRegionKoreanName(region);
   const districtName = safeDecode(district);
   const locationTitle = `${regionName} ${districtName}`;
+
+  // 새로고침(요청)할 때마다 매번 다르게 섞이도록 현재 시간(Date.now()) 또는 랜덤 정렬 적용
+  const shops = [...originalShops].sort(() => Math.random() - 0.5);
 
   return (
     <main className="min-h-screen bg-[#050505] text-gray-100 pb-20">
