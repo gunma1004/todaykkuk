@@ -133,7 +133,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const dynamicMassageRoutes: MetadataRoute.Sitemap = [];
 
-  // 🌟 핵심: 모든 지역/구/동/샵 경로 앞에 /massage 추가
   Object.entries(regionData).forEach(([regionKey, regionVal]) => {
     // 시(Region) 메인 페이지 추가 (/massage/seoul 등)
     dynamicMassageRoutes.push({
@@ -150,11 +149,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ];
 
       districtPaths.forEach((districtPath) => {
+        // 구(District) 페이지 추가
         dynamicMassageRoutes.push({
           url: `${baseUrl}/${districtPath}`,
           lastModified: new Date(),
           changeFrequency: 'daily',
           priority: 0.9,
+        });
+
+        // 🌟 [수정 완료] 구 바로 하위의 샵 상세 페이지들 추가
+        [1, 2, 3, 4, 5].forEach((shopId) => {
+          dynamicMassageRoutes.push({
+            url: `${baseUrl}/${districtPath}/shop/${shopId}`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.6,
+          });
         });
       });
 
