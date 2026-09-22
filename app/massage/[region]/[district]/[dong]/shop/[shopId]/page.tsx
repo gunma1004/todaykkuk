@@ -173,130 +173,60 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const shop = shopData[shopId] || shopData["1"];
 
   const locationPrefix = parseLocationText(region, district, dong);
+  const locationTitle = `${locationPrefix} ${shop.name}`;
 
-  // 1000개 이상의 고유 변수 인덱스 생성
   const charSum = (locationPrefix + shop.name + shopId + "todaykkuk_shop_seo_1000").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const variantIndex = charSum % 1000;
 
-  // 타이틀: '출장'과 '마사지'가 붙어 있지 않고 떨어져서 순환하는 1000가지 조합 배열
-const titleVariants = [
-  // 1 ~ 30
-  `${locationPrefix} 지역 맞춤형 출장 서비스 타이 마사지 안내 | 투데이쿡`,
-  `${locationPrefix} 전문 출장 방문 가능한 아로마 마사지 제휴점 · 투데이쿡`,
-  `${locationPrefix} 프라이빗 출장 홈케어 릴렉스 케어 마사지 추천 코스`,
-  `${locationPrefix} 안심 출장 서비스 스웨디시 프로그램 마사지 1:1 안내`,
-  `${locationPrefix} 신속 출장 배차 전신 힐링 테라피 마사지 24시 예약`,
-  `${locationPrefix} 최고급 출장 테라피 딥티슈 바디 마사지 피로회복 가이드`,
-  `${locationPrefix} 정찰제 출장 방문 홈케어 바디 케어 마사지 정보 | 투데이쿡`,
-  `${locationPrefix} 맞춤형 출장 서비스 릴렉스 프로그램 마사지 안내 · 투데이쿡`,
-  `${locationPrefix} 건식 및 출장 아로마 케어 마사지 제휴샵 총정리`,
-  `${locationPrefix} 24시간 출장 방문 프리미엄 감성 테라피 마사지 플랫폼`,
-  `${locationPrefix} 힐링 출장 서비스 순환 케어 전문 샵 마사지 가이드`,
-  `${locationPrefix} 스트레스 해소 출장 방문 힐링 코스 마사지 추천`,
-  `${locationPrefix} 1인 프라이빗 출장 맞춤형 바디 마사지 서비스`,
-  `${locationPrefix} 바디 밸런스 출장 홈케어 프로그램 마사지 안내`,
-  `${locationPrefix} 후불제 출장 방문 안심 전신 관리 마사지 · 투데이쿡`,
-  `${locationPrefix} 림프 순환 출장 아로마 테라피 마사지 제휴점`,
-  `${locationPrefix} 프리미엄 출장 서비스 딥릴렉스 프로그램 마사지 코스`,
-  `${locationPrefix} 소프트 힐링 출장 바디 케어 마사지 안내 · 투데이쿡`,
-  `${locationPrefix} 쾌적한 출장 방문 케어 프로그램 마사지 가이드`,
-  `${locationPrefix} 명품 출장 감성 스웨디시 힐링 테라피 마사지 정보`,
-  `${locationPrefix} 체형 맞춤형 출장 바디 케어 마사지 추천 · 투데이쿡`,
-  `${locationPrefix} 심야 24시 출장 신속 방문 마사지 예약 센터`,
-  `${locationPrefix} 전문 테라피스트 출장 방문 케어 마사지 안내`,
-  `${locationPrefix} 정통 스트레칭 출장 타이 프로그램 마사지 제휴점`,
-  `${locationPrefix} 하이엔드 출장 감성 힐링 프로그램 마사지 플랫폼`,
-  `${locationPrefix} VVIP 출장 스페셜 풀케어 바디 마사지 안내`,
-  `${locationPrefix} 전신 피로회복 출장 힐링 테라피 마사지 · 투데이쿡`,
-  `${locationPrefix} 안심 출장 방문 릴렉싱 프로그램 마사지 가이드`,
-  `${locationPrefix} 천연 에센셜 오일 출장 케어 마사지 정보`,
-  `${locationPrefix} 시그니처 출장 웰니스 바디 마사지 추천 코스`,
+  const titleVariants = [
+    `${locationPrefix} 지역 맞춤형 출장 서비스 타이 마사지 안내 `,
+    `${locationPrefix} 전문 출장 방문 가능한 아로마 마사지 제휴점 `,
+    `${locationPrefix} 프라이빗 출장 홈케어 릴렉스 케어 마사지 추천 코스`,
+    `${locationPrefix} 안심 출장 서비스 스웨디시 프로그램 마사지 1:1 안내`,
+    `${locationPrefix} 신속 출장 배차 전신 힐링 테라피 마사지 24시 예약`,
+    `${locationPrefix} 최고급 출장 테라피 딥티슈 바디 마사지 피로회복 가이드`,
+    `${locationPrefix} 정찰제 출장 방문 홈케어 바디 케어 마사지 정보 `,
+    `${locationPrefix} 맞춤형 출장 서비스 릴렉스 프로그램 마사지 안내`,
+    `${locationPrefix} 건식 및 출장 아로마 케어 마사지 제휴샵 총정리`,
+    `${locationPrefix} 24시간 출장 방문 프리미엄 감성 테라피 마사지 플랫폼`,
+    `${locationPrefix} 힐링 출장 서비스 순환 케어 전문 샵 마사지 가이드`,
+    `${locationPrefix} 스트레스 해소 출장 방문 힐링 코스 마사지 추천`,
+    `${locationPrefix} 1인 프라이빗 출장 맞춤형 바디 마사지 서비스`,
+    `${locationPrefix} 바디 밸런스 출장 홈케어 프로그램 마사지 안내`,
+    `${locationPrefix} 후불제 출장 방문 안심 전신 관리 마사지 `,
+    `${locationPrefix} 림프 순환 출장 아로마 테라피 마사지 제휴점`,
+    `${locationPrefix} 프리미엄 출장 서비스 딥릴렉스 프로그램 마사지 코스`,
+    `${locationPrefix} 소프트 힐링 출장 바디 케어 마사지 안내 `,
+    `${locationPrefix} 쾌적한 출장 방문 케어 프로그램 마사지 가이드`,
+    `${locationPrefix} 명품 출장 감성 스웨디시 힐링 테라피 마사지 정보`,
+    `${locationPrefix} 체형 맞춤형 출장 바디 케어 마사지 추천 `,
+    `${locationPrefix} 심야 24시 출장 신속 방문 마사지 예약 센터`,
+    `${locationPrefix} 전문 테라피스트 출장 방문 케어 마사지 안내`,
+    `${locationPrefix} 정통 스트레칭 출장 타이 프로그램 마사지 제휴점`,
+    `${locationPrefix} 하이엔드 출장 감성 힐링 프로그램 마사지 플랫폼`,
+    `${locationPrefix} VVIP 출장 스페셜 풀케어 바디 마사지 안내`,
+    `${locationPrefix} 전신 피로회복 출장 힐링 테라피 마사지 `,
+    `${locationPrefix} 안심 출장 방문 릴렉싱 프로그램 마사지 가이드`,
+    `${locationPrefix} 천연 에센셜 오일 출장 케어 마사지 정보`,
+    `${locationPrefix} 시그니처 출장 웰니스 바디 마사지 추천 코스`
+  ];
 
-  // 31 ~ 60
-  `${locationPrefix} 맞춤형 홈케어 방문 출장 스웨디시 마사지 안내 | 투데이쿡`,
-  `${locationPrefix} 1:1 방문 홈케어 출장 타이 마사지 제휴점 정보 · 투데이쿡`,
-  `${locationPrefix} 프라이빗 홈케어 출장 아로마 바디케어 코스 추천`,
-  `${locationPrefix} 안심 후불제 방문 홈케어 출장 마사지 가이드`,
-  `${locationPrefix} 신속 방문 홈케어 출장 전신 릴렉스 테라피 마사지`,
-  `${locationPrefix} 최고급 방문 홈케어 출장 딥티슈 마사지 프로그램`,
-  `${locationPrefix} 정찰제 방문 홈케어 출장 감성 힐링 마사지 정보`,
-  `${locationPrefix} 전문 방문 홈케어 출장 웰니스 마사지 가이드 · 투데이쿡`,
-  `${locationPrefix} 건식 및 오일 방문 홈케어 출장 마사지샵 총정리`,
-  `${locationPrefix} 24시간 방문 홈케어 출장 프리미엄 바디케어 마사지`,
-  `${locationPrefix} 힐링 방문 홈케어 출장 순환 테라피 마사지 안내`,
-  `${locationPrefix} 지친 일상 해소 방문 홈케어 출장 마사지 추천`,
-  `${locationPrefix} 1인 전용 방문 홈케어 출장 맞춤 마사지 서비스`,
-  `${locationPrefix} 밸런스 유지 방문 홈케어 출장 릴렉스 케어 마사지`,
-  `${locationPrefix} 후불제 안심 방문 홈케어 출장 전신 마사지 정보`,
-  `${locationPrefix} 부드러운 순환 방문 홈케어 출장 아로마 마사지`,
-  `${locationPrefix} 프리미엄 방문 홈케어 출장 딥릴렉스 마사지 코스`,
-  `${locationPrefix} 소프트 케어마사지 방문 홈케어 출장 안내· `,
-  `${locationPrefix} 쾌적한 실내 방문 홈케어 출장 테라피 마사지`,
-  `${locationPrefix} 명품 방문마사지 출장 스웨디시 프로그램 정보`,
-  `${locationPrefix} 체형 맞춤 방문 홈케어 출장 바디 케어 마사지`,
-  `${locationPrefix} 심야 운영 방문 홈케어 출장 신속 마사지 센터`,
-  `${locationPrefix} 전문 테라피스트 마사지 홈케어 출장 가이드`,
-  `${locationPrefix} 정통 방식 방문 홈케어 출장 타이 마사지 제휴점`,
-  `${locationPrefix} 하이엔드 출장 감성 힐링 마사지`,
-  `${locationPrefix} VVIP 마사지 홈케어 출장 스페셜 코스`,
-  `${locationPrefix} 피로 타파 방문 홈케어 출장 웰니스 마사지 안내`,
-  `${locationPrefix} 안심 보장 방문 홈케어 출장 릴렉싱 마사지 정보`,
-  `${locationPrefix} 허브 아로마 오일 마사지 방문 출장 홈케어 코스`,
-  `${locationPrefix} 시그니처 방문 홈케어 출장 토탈 케어 마사지`,
-
-  // 61 ~ 100
-  `${locationPrefix} 지역 밀착형 출장 테라피 서비스 마사지 안내 `,
-  `${locationPrefix} 전 지역 신속 출장 스웨디시 & 타이 코스 마사지 `,
-  `${locationPrefix} 프라이빗 출장 전문 힐링 바디테라피 마사지 추천`,
-  `${locationPrefix} 믿을 수 있는 출장 홈케어 프로그램 마사지 가이드`,
-  `${locationPrefix} 실시간 배차 출장 아로마 케어 마사지 예약 정보`,
-  `${locationPrefix} 전문 관리사 출장 방문 전신 케어 마사지샵 총정리`,
-  `${locationPrefix} 투명한 요금표 출장 웰니스 케어 마사지 플랫폼`,
-  `${locationPrefix} 맞춤형 코스 제공 출장 테라피 마사지 가이드`,
-  `${locationPrefix} 프리미엄 감성 출장 바디케어 프로그램 마사지 정보`,
-  `${locationPrefix} 24시 연중무휴 출장 홈케어 서비스 마사지 센터`,
-  `${locationPrefix} 피로 회복 특화 출장 테라피 제휴점 마사지 안내`,
-  `${locationPrefix} 편안한 휴식을 위한 출장 방문 마사지 추천 코스`,
-  `${locationPrefix} 1:1 맞춤 케어 출장 스웨디시 프로그램 마사지`,
-  `${locationPrefix} 밸런스 케어 중심 출장 타이 프로그램 마사지 정보`,
-  `${locationPrefix} 후불제 시스템 출장 방문 힐링 케어 마사지 · 투데이쿡`,
-  `${locationPrefix} 릴렉싱 아로마 출장 바디테라피 마사지 제휴점`,
-  `${locationPrefix} 하이엔드 급 출장 홈케어 테라피 프로그램 마사지`,
-  `${locationPrefix} 부드러운 터치 출장 테라피 프로그램 마사지 안내`,
-  `${locationPrefix} 쾌적하고 안전한 출장 힐링 서비스 마사지 가이드`,
-  `${locationPrefix} 명품 스웨디시 출장 전문 제휴점 마사지 정보`,
-  `${locationPrefix} 개인 맞춤형 출장 전신 프로그램 마사지 추천`,
-  `${locationPrefix} 심야 시간 출장 방문 예약 센터 마사지 플랫폼`,
-  `${locationPrefix} 베테랑 테라피스트 출장 케어 마사지 안내 · 투데이쿡`,
-  `${locationPrefix} 정통 릴렉스 출장 테라피 마사지 프로그램 정보`,
-  `${locationPrefix} 감성 충전 출장 웰니스 테라피 마사지 서비스`,
-  `${locationPrefix} VVIP 전용 출장 테라피 마사지 서비스 제휴점`,
-  `${locationPrefix} 전신 순환 케어 출장 홈케어 프로그램 마사지 안내`,
-  `${locationPrefix} 안심 후불제 출장 방문 케어 마사지 정보 코스`,
-  `${locationPrefix} 고급 오일 출장 스웨디시 테라피 케어 마사지`,
-  `${locationPrefix} 프리미엄 시그니처 출장 웰니스 마사지 안내 · 투데이쿡`,
-  `${locationPrefix} 지역 맞춤형 출장 힐링 테라피 마사지 총정리 가이드`,
-  `${locationPrefix} 전문 방문 홈케어 테라피 마사지 브랜드 정보`,
-  `${locationPrefix} 프라이빗 출장 웰니스 테라피 마사지 샵 추천`,
-  `${locationPrefix} 안심 출장 바디케어 프로그램 마사지 안내 코스`,
-  `${locationPrefix} 신속 출장 스웨디시 힐링 케어 마사지 제휴점`,
-  `${locationPrefix} 최고급 출장 타이 마사지 제휴 안내 · 투데이쿡`,
-  `${locationPrefix} 정찰제 출장 홈케어 감성 테라피 마사지 정보`,
-  `${locationPrefix} 맞춤 출장 전신 피로회복 케어 마사지 추천 코스`,
-  `${locationPrefix} 건식 및 아로마 출장 전문 샵 마사지 가이드`,
-  `${locationPrefix} 24시 프리미엄 출장 방문 서비스 마사지 플랫폼`
-];
+  const descriptionVariants = [
+    `${locationTitle} 지역에서 쾌적하고 편안하게 즐길 수 있는 전문 마사지 제휴업체 정보와 상세한 프로그램 안내를 확인해보세요.`,
+    `${locationTitle} 인근에서 차별화된 힐링 마사지 코스를 찾고 계신다면 투데이쿡이 엄선한 신뢰도 높은 제휴 요금표를 만나보세요.`,
+    `${locationTitle} 맞춤형 바디케어 안내입니다. 일상의 피로를 말끔히 풀어주는 전문 매장의 릴렉스 마사지 프로그램을 비교해보세요.`,
+    `${locationTitle} 전 지역에서 신속하게 이용 가능한 정찰제 마사지 및 프라이빗 제휴샵 정보를 빠르고 정확하게 안내해 드립니다.`,
+    `${locationTitle} 최고의 휴식을 선사하는 전문 테라피스트들의 맞춤형 마사지 코스. 지금 바로 투데이쿡에서 제휴 혜택을 확인하세요.`
+  ];
 
   const titleIndex = variantIndex % titleVariants.length;
   const descIndex = variantIndex % descriptionVariants.length;
 
-  const formattedTitle = `${titleVariants[titleIndex]} )`;
+  const formattedTitle = titleVariants[titleIndex];
   const formattedDesc = descriptionVariants[descIndex];
 
   return {
-    title: {
-      absolute: formattedTitle,
-    },
+    title: { absolute: formattedTitle },
     description: formattedDesc,
     keywords: [
       `${locationPrefix} 마사지`,
@@ -330,7 +260,6 @@ export default async function DongShopDetailPage({ params }: PageProps) {
 
   return (
     <div className="bg-[#050505] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-black pb-24">
-      {/* 상단 헤더 */}
       <header className="sticky top-0 z-50 bg-[#050505]/85 backdrop-blur-xl border-b border-amber-500/20 px-4 py-3.5 shadow-[0_4px_20px_rgba(245,158,11,0.1)]">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <Link href="/" className="flex items-center gap-3 group">
@@ -344,11 +273,7 @@ export default async function DongShopDetailPage({ params }: PageProps) {
               <span className="text-[10px] text-gray-400 tracking-tighter">PREMIUM HEALING PARTNER</span>
             </div>
           </Link>
-
-          <Link
-            href="/"
-            className="text-xs font-bold text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/30 hover:bg-amber-500 hover:text-black transition-all"
-          >
+          <Link href="/" className="text-xs font-bold text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/30 hover:bg-amber-500 hover:text-black transition-all">
             🏠 메인으로
           </Link>
         </div>
@@ -385,7 +310,6 @@ export default async function DongShopDetailPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* 상세 코스 및 요금 안내 */}
         <section className="bg-[#0d0d0f] border border-amber-500/20 p-6 md:p-8 rounded-3xl space-y-6">
           <div className="text-center">
             <span className="text-amber-400 text-xs font-bold tracking-widest uppercase">MASSAGE COURSE & PRICE</span>
@@ -406,7 +330,6 @@ export default async function DongShopDetailPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* 안심 이용 안내 */}
         <section className="bg-black/80 p-5 rounded-2xl border border-white/10">
           <h3 className="text-amber-400 font-bold text-sm mb-2 flex items-center gap-1.5">
             <span>📌</span> {locationPrefix} 마사지 안심 이용 안내
@@ -418,7 +341,6 @@ export default async function DongShopDetailPage({ params }: PageProps) {
         </section>
       </main>
 
-      {/* 하단 고정 전화 / 문자 바 */}
       <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#08080a]/95 backdrop-blur-xl border-t border-amber-500/30 p-3 md:p-4 shadow-[0_-10px_25px_rgba(0,0,0,0.8)]">
         <div className="max-w-4xl mx-auto grid grid-cols-2 gap-3">
           <a href={`tel:${shop.phone}`} className="flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black py-3.5 rounded-2xl text-xs md:text-sm shadow-[0_0_15px_rgba(245,158,11,0.3)] active:scale-95 transition-transform">

@@ -62,10 +62,9 @@ export default function DongClientUI({ region, district, dong, locationTitle }: 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {shuffledShops.map((shop) => (
             <div key={shop.id} className="bg-gradient-to-br from-[#161619] to-[#101013] border border-amber-500/25 hover:border-amber-400 rounded-2xl p-4 flex gap-4 items-center shadow-lg transition-all group relative">
-             {/* 🌟 shop.id로 올바르게 경로 지정 및 /massage 경로 추가 */}
-             <Link href={`/massage/${region}/${district}/${dong}/shop/${shop.id}`} className="absolute inset-0 z-10" aria-label={`${shop.name} 상세보기`} />
-              <img src={shop.image} alt={shop.name} className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover border border-amber-500/30" />
-              <div className="flex-1 min-w-0">
+               <Link href={`/massage/${region}/${district}/${dong}/shop/${shop.id}`} className="absolute inset-0 z-10" aria-label={`${shop.name} 상세보기`} />
+               <img src={shop.image} alt={shop.name} className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover border border-amber-500/30" />
+               <div className="flex-1 min-w-0">
                 <h3 className="font-extrabold text-sm md:text-base text-white truncate group-hover:text-amber-400 transition-colors">
                   {shop.name}
                 </h3>
