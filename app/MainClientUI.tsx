@@ -96,13 +96,12 @@ const regionData: Record<string, { name: string; districts: Record<string, { nam
       gyeyang: { name: "계양구", dongs: ["효성동", "계산동", "작전동", "작전서운동", "계양동"] },
       sehae: { name: "서해구", dongs: ["연희동", "가정동", "신현원창동", "석남동", "가좌동"] },
       geomdan: { name: "검단구", dongs: ["검암경서동", "청라동", "검단동", "불로대곡동", "원당동", "당하동", "오류왕길동", "마전동", "아라동"] },
-      ganghwa: { name: "강화군", dongs: ["강화읍", "선원면", "불은면", "길상면", "화도면", "양도면", "내가면", "하점면", "양사면", "송해면", "교동면", "삼산면", "서도면"] },
+      ganghwa: { name: "강화군", dongs: ["강화읍", "선원면", "불은면", "길상면", "화도면", "양동면", "내가면", "하점면", "양사면", "송해면", "교동면", "삼산면", "서도면"] },
       ongjin: { name: "옹진군", dongs: ["북도면", "연평면", "백령면", "대청면", "덕적면", "자월면", "영흥면"] }
     }
   }
 };
 
-// 🌟 스팸 트리거(홈케어/방문/25분 도착/선입금) 완전 제외, 클린 웰니스 표현 적용
 const initialLocalShops = [
   { id: 1, name: "한국미녀홈타이", desc: "수도권 주요지역 전문 감성 스웨디시 & 아로마 웰니스 테라피", phone: "0507-1280-3303", price: "100,000원부터~", image: "/shop1.jpg" },
   { id: 2, name: "너무이쁜홈타이", desc: "품격 있는 힐링을 선사하는 정통 타이마사지 및 프라이빗 바디케어", phone: "0507-1280-3190", price: "60,000원부터~", image: "/shop2.jpg" },
@@ -135,7 +134,7 @@ export default function MainClientUI() {
     setSelectedDong("");
   };
 
-  // 🌟 동 선택 여부에 따라 URL 분기 (/all 제거)
+  // 🌟 /massage/시/구/동 경로로 정확히 이동하도록 수정된 검색 핸들러
   const handleSearch = () => {
     if (!selectedDistrict) {
       alert("원하시는 지역(구/시)을 먼저 선택해주세요!");
@@ -144,9 +143,10 @@ export default function MainClientUI() {
     const districtObj = regionData[selectedRegion]?.districts[selectedDistrict];
     const districtName = districtObj ? districtObj.name : selectedDistrict;
     
-    const baseUrl = `/${selectedRegion}/${encodeURIComponent(districtName)}`;
+    // /massage 경로 추가
+    const baseUrl = `/massage/${selectedRegion}/${encodeURIComponent(districtName)}`;
     
-    // 동이 선택되었으면 '/seoul/마포구/서교동', 선택 안 했으면 '/seoul/마포구'로 이동
+    // 동 선택 여부에 따라 분기
     const targetUrl = selectedDong 
       ? `${baseUrl}/${encodeURIComponent(selectedDong)}` 
       : baseUrl;
