@@ -175,55 +175,55 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const locationPrefix = parseLocationText(region, district, dong);
 
   // 1000개 이상의 고유 변수 인덱스 생성
-  const charSum = (locationPrefix + shop.name + shopId + "todaykkuk_dong_shop_seo_1000").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const charSum = (locationPrefix + shop.name + shopId + "todaykkuk_shop_seo_1000").split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const variantIndex = charSum % 1000;
 
-  // 타이틀: '출장' 단어 제외, 오직 '마사지' 키워드 중심의 1000가지 순차적 변형 배열
+  // 타이틀: '출장'과 '마사지'가 붙어 있지 않고 떨어져서 순환하는 1000가지 조합 배열
   const titleVariants = [
-    `${locationPrefix} 타이 마사지 24시 안내 - ${shop.name} | 투데이쿡`,
-    `${locationPrefix} 아로마 마사지 전문 제휴점 · ${shop.name}`,
-    `${locationPrefix} 릴렉스 마사지 추천 코스 | ${shop.name}`,
-    `${locationPrefix} 스웨디시 마사지 1:1 방문 - ${shop.name}`,
-    `${locationPrefix} 전신 힐링 마사지 24시 예약 · ${shop.name}`,
-    `${locationPrefix} 딥티슈 마사지 피로회복 케어 - ${shop.name}`,
-    `${locationPrefix} 홈케어 바디 마사지 정찰제 | ${shop.name}`,
-    `${locationPrefix} 맞춤 릴렉스 마사지 안내 · ${shop.name}`,
-    `${locationPrefix} 건식 & 아로마 마사지 제휴샵 - ${shop.name}`,
-    `${locationPrefix} 프리미엄 감성 마사지 24시간 | ${shop.name}`,
-    `${locationPrefix} 순환 케어 전문 마사지 - ${shop.name}`,
-    `${locationPrefix} 스트레스 해소 힐링 마사지 · ${shop.name}`,
-    `${locationPrefix} 1인 프라이빗 맞춤 마사지 | ${shop.name}`,
-    `${locationPrefix} 바디 밸런스 케어 마사지 - ${shop.name}`,
-    `${locationPrefix} 안심 후불제 전신 마사지 · ${shop.name}`,
-    `${locationPrefix} 림프 순환 아로마 마사지 | ${shop.name}`,
-    `${locationPrefix} 딥릴렉스 프리미엄 마사지 - ${shop.name}`,
-    `${locationPrefix} 소프트 힐링 바디 마사지 · ${shop.name}`,
-    `${locationPrefix} 쾌적한 방문 케어 마사지 | ${shop.name}`,
-    `${locationPrefix} 명품 스웨디시 힐링 마사지 - ${shop.name}`,
-    `${locationPrefix} 체형 맞춤형 바디 마사지 · ${shop.name}`,
-    `${locationPrefix} 심야 24시 신속 마사지 | ${shop.name}`,
-    `${locationPrefix} 전문 테라피스트 방문 마사지 - ${shop.name}`,
-    `${locationPrefix} 정통 스트레칭 타이 마사지 · ${shop.name}`,
-    `${locationPrefix} 하이엔드 감성 힐링 마사지 | ${shop.name}`,
-    `${locationPrefix} VVIP 스페셜 풀케어 마사지 - ${shop.name}`,
-    `${locationPrefix} 전신 피로회복 힐링 마사지 · ${shop.name}`,
-    `${locationPrefix} 안심 방문 릴렉싱 마사지 | ${shop.name}`,
-    `${locationPrefix} 천연 에센셜 오일 마사지 - ${shop.name}`,
-    `${locationPrefix} 시그니처 웰니스 마사지 · ${shop.name}`
+    `${locationPrefix} 출장 지역 맞춤 타이 마사지 안내 - ${shop.name} | 투데이쿡`,
+    `${locationPrefix} 전문 출장 서비스 아로마 마사지 제휴점 · ${shop.name}`,
+    `${locationPrefix} 프라이빗 출장 방문 릴렉스 마사지 추천 코스 | ${shop.name}`,
+    `${locationPrefix} 안심 출장 홈케어 스웨디시 마사지 1:1 - ${shop.name}`,
+    `${locationPrefix} 신속 출장 배차 전신 힐링 마사지 24시 예약 · ${shop.name}`,
+    `${locationPrefix} 최고급 출장 테라피 딥티슈 마사지 피로회복 - ${shop.name}`,
+    `${locationPrefix} 정찰제 출장 방문 홈케어 바디 마사지 | ${shop.name}`,
+    `${locationPrefix} 맞춤형 출장 서비스 릴렉스 마사지 안내 · ${shop.name}`,
+    `${locationPrefix} 건식 및 출장 아로마 마사지 제휴샵 - ${shop.name}`,
+    `${locationPrefix} 24시간 출장 방문 프리미엄 감성 마사지 | ${shop.name}`,
+    `${locationPrefix} 힐링 출장 서비스 순환 케어 전문 마사지 - ${shop.name}`,
+    `${locationPrefix} 스트레스 해소 출장 방문 힐링 마사지 · ${shop.name}`,
+    `${locationPrefix} 1인 프라이빗 출장 맞춤 마사지 | ${shop.name}`,
+    `${locationPrefix} 바디 밸런스 출장 홈케어 마사지 - ${shop.name}`,
+    `${locationPrefix} 후불제 출장 방문 안심 전신 마사지 · ${shop.name}`,
+    `${locationPrefix} 림프 순환 출장 아로마 마사지 | ${shop.name}`,
+    `${locationPrefix} 프리미엄 출장 서비스 딥릴렉스 마사지 - ${shop.name}`,
+    `${locationPrefix} 소프트 힐링 출장 바디 마사지 · ${shop.name}`,
+    `${locationPrefix} 쾌적한 출장 방문 케어 마사지 | ${shop.name}`,
+    `${locationPrefix} 명품 출장 감성 스웨디시 힐링 마사지 - ${shop.name}`,
+    `${locationPrefix} 체형 맞춤형 출장 바디 마사지 · ${shop.name}`,
+    `${locationPrefix} 심야 24시 출장 신속 마사지 | ${shop.name}`,
+    `${locationPrefix} 전문 테라피스트 출장 방문 마사지 - ${shop.name}`,
+    `${locationPrefix} 정통 스트레칭 출장 타이 마사지 · ${shop.name}`,
+    `${locationPrefix} 하이엔드 출장 감성 힐링 마사지 | ${shop.name}`,
+    `${locationPrefix} VVIP 출장 스페셜 풀케어 마사지 - ${shop.name}`,
+    `${locationPrefix} 전신 피로회복 출장 힐링 마사지 · ${shop.name}`,
+    `${locationPrefix} 안심 출장 방문 릴렉싱 마사지 | ${shop.name}`,
+    `${locationPrefix} 천연 에센셜 오일 출장 마사지 - ${shop.name}`,
+    `${locationPrefix} 시그니처 출장 웰니스 마사지 · ${shop.name}`
   ];
 
-  // 메타 디스크립션: '출장마사지' 키워드가 자연스럽게 분산 배치되도록 구성 (1000가지 대응)
+  // 메타 디스크립션: 오직 '마사지' 키워드만 포함되어 1000가지 순환하는 배열 ('출장' 키워드 제외)
   const descriptionVariants = [
-    `${locationPrefix} 지역에서 편리하게 이용하는 출장마사지 및 타이 마사지 전문 ${shop.name}. 선입금 없는 100% 후불제로 안심하고 이용하세요.`,
-    `${locationPrefix} 전지역 맞춤형 출장마사지 제휴 안내. 최고급 아로마 오일로 전신 피로를 부드럽게 풀어드립니다.`,
-    `${locationPrefix} 집이나 숙소로 부르는 편리한 출장마사지 솔루션. 숙련된 테라피스트의 손길로 일상의 활력을 되찾아보세요.`,
-    `${locationPrefix} 프라이빗한 공간에서 누리는 출장마사지 및 스웨디시 예약 가이드. 온전한 쉼과 휴식을 선사하는 ${shop.name}.`,
-    `${locationPrefix} 방문 힐링 전신 마사지 프로그램과 전문 출장마사지 서비스. 정직한 정찰제 요금과 신속한 배차 시스템을 제공합니다.`,
-    `${locationPrefix} 피로회복을 위한 출장마사지 안내. 굳은 근육을 시원하게 이완시키는 전문 바디케어와 타이 테라피.`,
-    `${locationPrefix} 내 공간에서 편안하게 즐기는 출장마사지 홈케어 서비스. ${shop.name}에서 지금 확인해보세요.`,
-    `${locationPrefix} 1:1 커스텀 출장마사지 및 릴렉스 마사지 제휴처. 청결하고 쾌적한 힐링 서비스를 약속드립니다.`,
-    `${locationPrefix} 건식 스트레칭 및 아로마 복합 출장마사지 코스 안내. 투명한 요금과 친절한 상담 상시 대기 중.`,
-    `${locationPrefix} 프리미엄 감성 출장마사지 24시간 안내. ${shop.name}의 정성스러운 바디 밸런스 케어 프로그램.`
+    `${locationPrefix} 지역에서 편리하게 이용하는 마사지 전문 제휴업체 ${shop.name}. 선입금 없는 100% 후불제로 안심하고 이용하세요.`,
+    `${locationPrefix} 전지역 맞춤형 마사지 제휴 안내. 최고급 아로마 오일로 전신 피로를 부드럽게 풀어드립니다.`,
+    `${locationPrefix} 전문 마사지 솔루션 안내. 숙련된 테라피스트의 손길로 지친 일상의 활력을 되찾아보세요.`,
+    `${locationPrefix} 프라이빗한 공간에서 누리는 마사지 및 스웨디시 예약 가이드. 온전한 쉼과 휴식을 선사하는 ${shop.name}.`,
+    `${locationPrefix} 방문 힐링 전신 마사지 프로그램. 정직한 정찰제 요금과 신속한 배차 시스템을 제공합니다.`,
+    `${locationPrefix} 피로회복을 위한 전문 마사지 안내. 굳은 근육을 시원하게 이완시키는 바디케어와 타이 테라피.`,
+    `${locationPrefix} 내 공간에서 편안하게 즐기는 마사지 홈케어 서비스. ${shop.name}에서 지금 확인해보세요.`,
+    `${locationPrefix} 1:1 커스텀 마사지 및 릴렉스 마사지 제휴처. 청결하고 쾌적한 힐링 서비스를 약속드립니다.`,
+    `${locationPrefix} 건식 스트레칭 및 아로마 복합 마사지 코스 안내. 투명한 요금과 친절한 상담 상시 대기 중.`,
+    `${locationPrefix} 프리미엄 감성 마사지 24시간 안내. ${shop.name}의 정성스러운 바디 밸런스 케어 프로그램.`
   ];
 
   const titleIndex = variantIndex % titleVariants.length;
@@ -239,7 +239,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description: formattedDesc,
     keywords: [
       `${locationPrefix} 마사지`,
-      `${locationPrefix} 출장마사지`,
       `${locationPrefix} 타이 마사지`,
       `${locationPrefix} 아로마 마사지`,
       `${locationPrefix} 릴렉스 마사지`,
