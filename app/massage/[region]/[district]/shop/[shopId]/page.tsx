@@ -227,7 +227,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const titleIndex = variantIndex % titleVariants.length;
   const descIndex = variantIndex % descriptionVariants.length;
 
-  const formattedTitle = `${titleVariants[titleIndex]} (${variantIndex + 1})`;
+  const formattedTitle = `${titleVariants[titleIndex]} `;
   const formattedDesc = descriptionVariants[descIndex];
 
   return {
