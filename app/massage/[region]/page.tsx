@@ -48,14 +48,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // 메타 디스크립션 1000가지 순환 조합 ('출장마사지' 키워드 분산 배치)
   const descTemplates = [
-    `${regionName} 전 지역에서 편안하게 이용할 수 있는 출장마사지 및 매장 제휴업체 정보입니다. 지친 몸과 마음을 달래줄 전문 테라피스트의 케어를 만나보세요.`,
-    `${regionName} 인근에서 차별화된 출장마사지 서비스를 찾고 계신다면 투데이쿡의 엄선된 제휴 코스와 합리적인 요금표를 확인해보세요.`,
-    `${regionName} 맞춤형 힐링 테라피 안내입니다. 집이나 숙소로 부르는 편리한 출장마사지부터 쾌적한 전문 매장까지 한눈에 비교할 수 있습니다.`,
-    `${regionName} 프라이빗한 휴식을 선사하는 출장마사지 및 타이·아로마 케어 프로그램. 숙련된 전문가의 손길로 피로를 날려보세요.`,
-    `${regionName} 정성 어린 손길의 출장마사지 및 전신 바디케어 정보. 투명한 정찰제와 쾌적한 웰니스 코스를 지금 바로 만나보세요.`,
-    `${regionName} 종합 힐링 가이드. ${regionName} 내에서 믿을 수 있는 출장마사지 서비스와 고급 스웨디시 마사지 업소를 편리하게 찾아보세요.`,
-    `${regionName} 프리미엄 테라피 안내. 일상에 활력을 불어넣어 주는 전문 출장마사지 및 다양한 바디케어 프로그램을 안내해 드립니다.`,
-    `${regionName} 릴렉스 바디케어 모음. 편안한 휴식을 제공하는 출장마사지 제휴점과 정통 아로마 테라피 코스를 지금 확인해보세요.`
+    `${regionName} 전 지역에서 편안하게 이용할 수 있는 출장 및 제휴업체 마사지 정보입니다. 지친 몸과 마음을 달래줄 전문 테라피스트의 케어를 만나보세요.`,
+    `${regionName} 인근에서 차별화된 출장 서비스를 찾고 계신다면 투데이쿡의 엄선된 제휴 마사지 코스와 합리적인 요금표를 확인해보세요.`,
+    `${regionName} 맞춤형 힐링 출장 테라피 안내입니다. 집이나 숙소로 부르는 편리한 마사지부터 쾌적한 전문 매장까지 한눈에 비교할 수 있습니다.`,
+    `${regionName} 프라이빗한 휴식을 선사하는 출장 홈케어 및 타이·아로마 케어 프로그램. 마사지 숙련된 전문가의 손길로 피로를 날려보세요.`,
+    `${regionName} 정성 어린 손길의 마사지 및 전신 바디케어 정보. 투명한 정찰제와 쾌적한 출장 웰니스 코스를 지금 바로 만나보세요.`,
+    `${regionName} 종합 출장 힐링 가이드. ${regionName} 내에서 믿을 수 있는 서비스와 고급 스웨디시 마사지 업소를 편리하게 찾아보세요.`,
+    `${regionName} 프리미엄 출장 테라피 안내. 일상에 활력을 불어넣어 주는 전문 마사지 및 다양한 바디케어 프로그램을 안내해 드립니다.`,
+    `${regionName} 릴렉스 출장 바디케어 모음. 편안한 휴식을 제공하는 마사지 제휴점과 정통 아로마 테라피 코스를 지금 확인해보세요.`
   ];
 
   const titleIndex = variantIndex % titleTemplates.length;
@@ -98,7 +98,7 @@ export default async function MassageRegionPage({ params }: PageProps) {
     <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
-          {regionName} 마사지 및 출장마사지 제휴 안내
+          {regionName} 마사지 및 출장 제휴 안내
         </h1>
         <p className="text-gray-600 mb-8">
           원하시는 구와 동을 선택하여 상세한 제휴업체 정보와 코스별 요금을 확인해 보세요.
