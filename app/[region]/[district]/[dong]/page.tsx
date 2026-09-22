@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import DongClientUI from "../../../massage/[region]/[district]/DongClientUI";
+import DongClientUI from "../../../massage/[region]/[district]/[dong]/DongClientUI";
 
 interface PageProps {
   params: Promise<{
